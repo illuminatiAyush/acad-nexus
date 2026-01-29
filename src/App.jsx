@@ -3,8 +3,7 @@ import { MainLayout } from './components/layout/MainLayout';
 import { Dashboard } from './pages/Dashboard';
 import { ApprovalsPage } from './pages/Approvals';
 import { CalendarPage } from './pages/Calendar';
-
-// DELETE the old "const CalendarPage = ..." line that was here!
+import { AlertsPage } from './pages/Alerts';
 
 function App() {
   return (
@@ -14,7 +13,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/approvals" element={<ApprovalsPage />} />
-          <Route path="/alerts" element={<div>Alerts Page (Coming Soon)</div>} />
+          <Route path="/alerts" element={<AlertsPage />} />
         </Route>
       </Routes>
     </Router>

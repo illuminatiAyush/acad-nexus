@@ -13,7 +13,10 @@ export const Header = () => {
         />
       </div>
       <div className="flex items-center gap-6">
-        <Bell size={20} className="text-slate-500" />
+        <button className="relative text-slate-500 hover:text-slate-700">
+          <Bell size={20} />
+          <span className="absolute -top-1 -right-1 h-2.5 w-2.5 bg-stress-high rounded-full border-2 border-white"></span>
+        </button>
         <div className="h-8 w-8 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold border border-primary-200">
           AR
         </div>

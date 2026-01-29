@@ -9,7 +9,6 @@ const menuItems = [
   { icon: Bell, label: 'Alerts', path: '/alerts' },
 ];
 
-// NOTICE: "export const" is required here for the import { Sidebar } to work
 export const Sidebar = () => {
   const location = useLocation();
 
