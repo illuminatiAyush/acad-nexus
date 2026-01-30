@@ -66,14 +66,14 @@ const StyledWrapper = styled.div`
     align-items: center;
     justify-content: space-evenly;
     border-radius: 30px; /* Pill shape */
-    box-shadow: 0px 8px 20px rgba(131, 72, 205, 0.4);
+    box-shadow: 0px 5px 15px rgba(66, 17, 127, 0.4);
     padding: 0 10px;
     transition: all 0.3s ease;
   }
 
   .button-container:hover {
     transform: translateY(-2px);
-    box-shadow: 0px 12px 25px rgba(228, 157, 236, 0.5);
+    box-shadow: 0px 6px 12px rgba(228, 157, 236, 0.5);
   }
 
   .button {

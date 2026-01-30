@@ -1,12 +1,12 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const AcademicContext = createContext();
 
 export const AcademicProvider = ({ children }) => {
-  // 1. Enhanced User State
+  // --- EXISTING USER LOGIC ---
   const [user, setUser] = useState({
     name: "Dr. Alex Rivera",
-    role: "faculty", // Options: 'faculty' or 'student'
+    role: "faculty", 
     dept: "Computer Science"
   });
 
@@ -17,12 +17,31 @@ export const AcademicProvider = ({ children }) => {
 
   const [notification, setNotification] = useState(null);
 
+  // --- NEW: DARK MODE LOGIC ---
+  // 1. Check local storage or default to false
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
+
+  // 2. Apply the class to the HTML tag whenever state changes
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+
+  // --- EXISTING ACTIONS ---
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 3000);
   };
 
-  // 2. Action: Switch Role (For testing)
   const switchRole = (newRole) => {
     if (newRole === 'student') {
       setUser({ name: "Rahul Sharma", role: "student", dept: "CS-A" });
@@ -36,7 +55,7 @@ export const AcademicProvider = ({ children }) => {
   const addRequest = (newRequest) => {
     const request = {
       id: Date.now(),
-      student: user.name, // Now uses the REAL current user name
+      student: user.name,
       time: "Just now",
       status: "Pending",
       ...newRequest
@@ -51,10 +70,19 @@ export const AcademicProvider = ({ children }) => {
   };
 
   return (
-    <AcademicContext.Provider value={{ user, requests, addRequest, resolveRequest, showNotification, switchRole }}>
+    <AcademicContext.Provider value={{ 
+      user, 
+      requests, 
+      addRequest, 
+      resolveRequest, 
+      showNotification, 
+      switchRole,
+      darkMode,        // Exporting state
+      toggleDarkMode   // Exporting function
+    }}>
       {children}
       {notification && (
-        <div className={`fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg text-white font-medium transition-all transform translate-y-0 z-50 ${
+        <div className={`fixed bottom-24 right-4 px-6 py-3 rounded-lg shadow-lg text-white font-medium transition-all transform translate-y-0 z-50 ${
           notification.type === 'error' ? 'bg-red-600' : 'bg-emerald-600'
         }`}>
           {notification.message}
