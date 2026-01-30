@@ -5,12 +5,14 @@ import { ApprovalsPage } from './pages/Approvals';
 import { CalendarPage } from './pages/Calendar';
 import { AlertsPage } from './pages/Alerts';
 import { AcademicProvider } from './context/AcademicContext';
+import { LoginPage } from './pages/Login';
 
 function App() {
   return (
     <AcademicProvider> {/* 2. Wrap the entire Router */}
       <Router>
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
           <Route element={<MainLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/calendar" element={<CalendarPage />} />
