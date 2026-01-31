@@ -116,8 +116,8 @@ export const Sidebar = () => {
             {/* Footer */}
             <div className="p-4 border-t border-slate-200 dark:border-slate-800">
                 <div className="flex items-center justify-between mb-4 bg-slate-50 dark:bg-slate-800/50 p-1 rounded-lg">
-                    <button onClick={() => darkMode && toggleDarkMode()} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-all ${!darkMode ? 'bg-white shadow-sm text-slate-800' : 'text-slate-500'}`}> <Sun size={14} /> Light </button>
-                    <button onClick={() => !darkMode && toggleDarkMode()} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-all ${darkMode ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-500'}`}> <Moon size={14} /> Dark </button>
+                    {/* <button onClick={() => darkMode && toggleDarkMode()} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-all ${!darkMode ? 'bg-white shadow-sm text-slate-800' : 'text-slate-500'}`}> <Sun size={14} /> Light </button>
+                    <button onClick={() => !darkMode && toggleDarkMode()} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-all ${darkMode ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-500'}`}> <Moon size={14} /> Dark </button> */}
                 </div>
                 {/* Simplified User Profile for brevity */}
                  <button onClick={logout} className="w-full flex items-center justify-center gap-2 p-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg"> <LogOut size={14} /> Sign Out </button>
