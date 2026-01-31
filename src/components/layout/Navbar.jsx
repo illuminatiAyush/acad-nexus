@@ -2,52 +2,58 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-// Notice: "export const" is used here so MainLayout can import it nicely
+// import React from 'react';
+import { LayoutDashboard, Calendar, Plus, FileText, Bell } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { useAcademic } from '../../context/AcademicContext';
+
 export const Navbar = () => {
+  const { user, requests } = useAcademic();
+  const location = useLocation();
   const navigate = useNavigate();
+  
+  // Check role
+  const isStudent = user?.role === 'student';
+
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <StyledWrapper>
-      <div className="button-container">
-        
-        {/* Home Button */}
-        <button className="button" onClick={() => navigate('/')} title="Dashboard">
-          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon">
-             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/> 
-             <polyline points="9 22 9 12 15 12 15 22"/>
-          </svg>
-        </button>
+    <nav className="fixed bottom-6 left-6 right-6 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 p-2 flex justify-between items-center z-50 lg:hidden animate-in slide-in-from-bottom-4">
+      
+      {/* Dashboard */}
+      <Link to="/" className={`p-3 rounded-xl transition-colors ${isActive('/') ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-slate-400 hover:text-slate-600'}`}>
+        <LayoutDashboard size={24} />
+      </Link>
 
-        {/* Calendar Button */}
-        <button className="button" onClick={() => navigate('/calendar')} title="Academic Calendar">
-          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon">
-            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
-            <line x1="16" x2="16" y1="2" y2="6"/>
-            <line x1="8" x2="8" y1="2" y2="6"/>
-            <line x1="3" x2="21" y1="10" y2="10"/>
-          </svg>
-        </button>
+      {/* Calendar */}
+      <Link to="/calendar" className={`p-3 rounded-xl transition-colors ${isActive('/calendar') ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-slate-400 hover:text-slate-600'}`}>
+        <Calendar size={24} />
+      </Link>
 
-        {/* Approvals Button */}
-        <button className="button" onClick={() => navigate('/approvals')} title="Approvals">
-          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon">
-            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-            <polyline points="14 2 14 8 20 8"/>
-          </svg>
-        </button>
+      {/* CENTER ACTION BUTTON (The Missing Piece) */}
+      <button 
+        onClick={() => navigate(isStudent ? '/request' : '/calendar')}
+        className="bg-primary-600 text-white p-4 rounded-full shadow-lg shadow-primary-500/40 -mt-10 border-[6px] border-slate-50 dark:border-slate-950 active:scale-95 transition-transform hover:bg-primary-700"
+      >
+        <Plus size={28} />
+      </button>
 
-        {/* Alerts Button */}
-        <button className="button" onClick={() => navigate('/alerts')} title="System Alerts">
-          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon">
-             <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
-             <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
-          </svg>
-        </button>
+      {/* Approvals / Requests List */}
+      <Link to="/approvals" className={`relative p-3 rounded-xl transition-colors ${isActive('/approvals') ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-slate-400 hover:text-slate-600'}`}>
+        <FileText size={24} />
+        {requests.length > 0 && (
+          <span className="absolute top-3 right-3 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
+        )}
+      </Link>
 
-      </div>
-    </StyledWrapper>
+      {/* Alerts */}
+      <Link to="/alerts" className={`relative p-3 rounded-xl transition-colors ${isActive('/alerts') ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-slate-400 hover:text-slate-600'}`}>
+        <Bell size={24} />
+      </Link>
+
+    </nav>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   /* Floating Dock Position */

@@ -5,6 +5,7 @@ import { ApprovalsPage } from './pages/Approvals';
 import { CalendarPage } from './pages/Calendar';
 import { AlertsPage } from './pages/Alerts';
 import { AcademicProvider } from './context/AcademicContext';
+import { RequestsPage } from './pages/Requests';
 import { LoginPage } from './pages/Login';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/calendar" element={<CalendarPage />} />
             <Route path="/approvals" element={<ApprovalsPage />} />
             <Route path="/alerts" element={<AlertsPage />} />
+            <Route path="/request" element={<RequestsPage />} />
           </Route>
         </Routes>
       </Router>

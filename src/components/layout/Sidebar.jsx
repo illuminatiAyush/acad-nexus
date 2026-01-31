@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
-  LayoutDashboard, Calendar, FileText, Bell, BarChart2, Settings, 
-  Plus, Moon, Sun, LogOut, ChevronDown, GraduationCap, RefreshCw, Menu 
+  LayoutDashboard, Calendar, FileText, Bell, Plus, Moon, Sun, 
+  LogOut, GraduationCap, Menu, RefreshCw // Added RefreshCw
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAcademic } from '../../context/AcademicContext';
@@ -10,7 +10,7 @@ export const Sidebar = () => {
   const { user, logout, switchRole, darkMode, toggleDarkMode, requests } = useAcademic();
   const location = useLocation();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false); // Controls the slide
+  const [isOpen, setIsOpen] = useState(false);
 
   const isStudent = user?.role === 'student';
 
@@ -27,28 +27,24 @@ export const Sidebar = () => {
   ];
 
   return (
-    // 1. Detection Zone: Fixed to top-left.
-    // When you hover THIS container, the sidebar opens.
     <div 
       className="fixed top-0 left-0 h-screen z-50 flex"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
     >
       
-      {/* 2. The Menu Button (Visible when CLOSED) */}
+      {/* Menu Button (Visible when closed) */}
       <div className={`p-4 transition-opacity duration-300 absolute top-0 left-0 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         <button className="bg-white dark:bg-slate-800 p-3 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50">
           <Menu size={24} />
         </button>
       </div>
 
-      {/* 3. The Sliding Sidebar (Visible when OPEN) */}
-      {/* -translate-x-full hides it off-screen to the left */}
+      {/* Sliding Sidebar */}
       <aside className={`w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 h-screen shadow-2xl transition-transform duration-300 ease-in-out transform ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         
-        {/* --- Sidebar Content (Same as before) --- */}
         <div className="flex flex-col h-full">
             
             {/* Brand */}
@@ -56,11 +52,11 @@ export const Sidebar = () => {
                 <div className="flex items-center gap-3 text-primary-600 dark:text-primary-500 mb-1">
                 <GraduationCap size={28} strokeWidth={2.5} />
                 <h1 className="text-xl font-bold tracking-tight text-slate-800 dark:text-white">
-                    AcadNexus
+                    AcademiFlow
                 </h1>
                 </div>
                 <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 pl-10 uppercase tracking-widest">
-                Acad Nexus
+                Academic Nexus
                 </p>
             </div>
 
@@ -104,7 +100,8 @@ export const Sidebar = () => {
 
                 <div className="mt-6 mb-6">
                     <button 
-                        onClick={() => navigate('/approvals')}
+                        // FIXED: This points to /request now
+                        onClick={() => navigate(isStudent ? '/request' : '/calendar')}
                         className="w-full bg-primary-600 hover:bg-primary-700 text-white p-3 rounded-xl flex items-center justify-center gap-2 font-medium shadow-lg shadow-primary-500/20 transition-all active:scale-95"
                     >
                         <Plus size={18} />
@@ -113,14 +110,28 @@ export const Sidebar = () => {
                 </div>
             </nav>
 
-            {/* Footer */}
-            <div className="p-4 border-t border-slate-200 dark:border-slate-800">
-                <div className="flex items-center justify-between mb-4 bg-slate-50 dark:bg-slate-800/50 p-1 rounded-lg">
-                    {/* <button onClick={() => darkMode && toggleDarkMode()} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-all ${!darkMode ? 'bg-white shadow-sm text-slate-800' : 'text-slate-500'}`}> <Sun size={14} /> Light </button>
-                    <button onClick={() => !darkMode && toggleDarkMode()} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-all ${darkMode ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-500'}`}> <Moon size={14} /> Dark </button> */}
+            {/* Footer Controls */}
+            <div className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                
+                {/* 1. Dark Mode Toggle */}
+                <div className="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-1 rounded-lg">
+                    {/* <button onClick={() => !darkMode && toggleDarkMode()} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-all ${!darkMode ? 'bg-white shadow-sm text-slate-800' : 'text-slate-500'}`}> <Sun size={14} /> Light </button>
+                    <button onClick={() => darkMode && toggleDarkMode()} className={`flex-1 flex items-center justify-center gap-2 py-1.5 rounded-md text-xs font-medium transition-all ${darkMode ? 'bg-slate-700 text-white shadow-sm' : 'text-slate-500'}`}> <Moon size={14} /> Dark </button> */}
                 </div>
-                {/* Simplified User Profile for brevity */}
-                 <button onClick={logout} className="w-full flex items-center justify-center gap-2 p-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg"> <LogOut size={14} /> Sign Out </button>
+
+                {/* 2. SWITCH ROLE BUTTON (Added Back!) */}
+                <button 
+                  onClick={() => switchRole(isStudent ? 'faculty' : 'student')}
+                  className="w-full flex items-center justify-center gap-2 p-2 text-xs font-bold uppercase tracking-wider text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                > 
+                  <RefreshCw size={14} /> 
+                  Switch to {isStudent ? 'Faculty' : 'Student'}
+                </button>
+
+                {/* 3. Sign Out */}
+                <button onClick={logout} className="w-full flex items-center justify-center gap-2 p-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-lg"> 
+                  <LogOut size={14} /> Sign Out 
+                </button>
             </div>
         </div>
       </aside>

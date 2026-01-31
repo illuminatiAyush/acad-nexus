@@ -171,7 +171,7 @@ export const Dashboard = () => {
               {user?.role === 'student' ? (
                 <>
                   <button 
-                    onClick={() => navigate('/approvals')}
+                    onClick={() => navigate('/request')}
                     className="w-full flex items-center justify-between p-3 rounded-xl bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-colors"
                   >
                     <span className="text-sm font-medium">New Request</span>
