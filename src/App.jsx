@@ -6,6 +6,7 @@ import { CalendarPage } from './pages/Calendar';
 import { AlertsPage } from './pages/Alerts';
 import { AcademicProvider } from './context/AcademicContext';
 import { RequestsPage } from './pages/Requests';
+import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/Login';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
     <AcademicProvider> {/* 2. Wrap the entire Router */}
       <Router>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route element={<MainLayout />}>
             <Route path="/" element={<Dashboard />} />
