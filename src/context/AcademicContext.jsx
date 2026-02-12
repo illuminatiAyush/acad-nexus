@@ -1,29 +1,26 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AcademicContext = createContext();
 
+export const useAcademic = () => useContext(AcademicContext);
+
 export const AcademicProvider = ({ children }) => {
-  // --- EXISTING USER LOGIC ---
-  const [user, setUser] = useState({
-    name: "Dr. Alex Rivera",
-    role: "faculty", 
-    dept: "Computer Science"
+  // 1. User State (Read from browser storage first)
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('acad_user');
+    return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  const [requests, setRequests] = useState([
-    { id: 1, student: "John Smith", type: "Medical Leave", status: "Pending", time: "2h ago" },
-    { id: 2, student: "Sarah Lee", type: "Internship NOC", status: "Pending", time: "5h ago" }
-  ]);
-
-  const [notification, setNotification] = useState(null);
-
-  // --- NEW: DARK MODE LOGIC ---
-  // 1. Check local storage or default to false
+  // 2. Dark Mode State
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('theme') === 'dark';
   });
 
-  // 2. Apply the class to the HTML tag whenever state changes
+  // 3. Data States
+  const [requests, setRequests] = useState([]);
+  const [notification, setNotification] = useState(null);
+
+  // --- EFFECT: Handle Dark Mode Changes ---
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -34,55 +31,78 @@ export const AcademicProvider = ({ children }) => {
     }
   }, [darkMode]);
 
+  // --- ACTIONS ---
+
+  // THE MISSING FUNCTION WAS LIKELY HERE
+  const login = (email, role = 'student') => {
+    const newUser = {
+      name: email.includes('alex') ? "Dr. Alex Rivera" : "Rahul Sharma",
+      email: email,
+      role: role,
+      dept: role === 'faculty' ? "Computer Science" : "CS-A",
+      avatar: 'https://i.pravatar.cc/150?u=' + email,
+    };
+    
+    // Save to State AND Browser Storage
+    setUser(newUser);
+    localStorage.setItem('acad_user', JSON.stringify(newUser));
+    return true; // Return true so the login page knows it worked
+  };
+
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('acad_user');
+    window.location.href = '/login';
+  };
+
+  const switchRole = (newRole) => {
+    if (!user) return;
+    const updatedUser = { 
+        ...user, 
+        name: newRole === 'student' ? "Rahul Sharma" : "Dr. Alex Rivera",
+        role: newRole,
+        dept: newRole === 'student' ? "CS-A" : "Computer Science"
+    };
+    setUser(updatedUser);
+    localStorage.setItem('acad_user', JSON.stringify(updatedUser));
+    showNotification(`Switched to ${newRole} view`);
+  };
+
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
-  // --- EXISTING ACTIONS ---
   const showNotification = (message, type = 'success') => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const switchRole = (newRole) => {
-    if (newRole === 'student') {
-      setUser({ name: "Rahul Sharma", role: "student", dept: "CS-A" });
-      showNotification("Switched to Student View");
-    } else {
-      setUser({ name: "Dr. Alex Rivera", role: "faculty", dept: "Computer Science" });
-      showNotification("Switched to Faculty View");
-    }
-  };
-
   const addRequest = (newRequest) => {
-    const request = {
-      id: Date.now(),
-      student: user.name,
-      time: "Just now",
-      status: "Pending",
-      ...newRequest
-    };
-    setRequests([request, ...requests]);
-    showNotification("Request submitted successfully!");
+    setRequests([...requests, { id: Date.now(), ...newRequest }]);
   };
 
   const resolveRequest = (id) => {
     setRequests(requests.filter(req => req.id !== id));
-    showNotification("Request approved");
   };
 
+  // --- EXPOSING THE FUNCTIONS ---
+  // If 'login' is missing from this list, the error happens!
   return (
     <AcademicContext.Provider value={{ 
       user, 
+      login,       // <--- CRITICAL: This must be here
+      logout,
+      switchRole,
       requests, 
       addRequest, 
       resolveRequest, 
       showNotification, 
-      switchRole,
-      darkMode,        // Exporting state
-      toggleDarkMode   // Exporting function
+      darkMode,
+      toggleDarkMode
     }}>
       {children}
+      
+      {/* Global Toast Notification */}
       {notification && (
-        <div className={`fixed bottom-24 right-4 px-6 py-3 rounded-lg shadow-lg text-white font-medium transition-all transform translate-y-0 z-50 ${
+        <div className={`fixed bottom-6 right-6 px-6 py-3 rounded-lg shadow-lg text-white font-medium z-[100] ${
           notification.type === 'error' ? 'bg-red-600' : 'bg-emerald-600'
         }`}>
           {notification.message}
@@ -91,5 +111,3 @@ export const AcademicProvider = ({ children }) => {
     </AcademicContext.Provider>
   );
 };
-
-export const useAcademic = () => useContext(AcademicContext);

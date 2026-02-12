@@ -59,7 +59,7 @@ export const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="lg:grid lg:grid-cols-12 lg:gap-16 items-center">
             
-            {/* Left Column: Text */}
+            {/* Left Column: Text & Trust Signals */}
             <div className="lg:col-span-6 mb-12 lg:mb-0 text-center lg:text-left">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
                 Simplify Your Academic
@@ -92,23 +92,47 @@ export const LandingPage = () => {
                 </a>
               </div>
 
-              {/* Trust Signals */}
-              <div className="mt-16 pt-8 border-t border-slate-200/60">
-                <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-6">Trusted by Forward-Thinking Institutions</p>
-                <div className="flex flex-wrap justify-center lg:justify-start gap-8 grayscale opacity-60">
-                  {/* Replace with actual logos */}
-                  <div className="h-8 w-24 bg-slate-300/50 rounded animate-pulse"></div>
-                  <div className="h-8 w-32 bg-slate-300/50 rounded animate-pulse"></div>
-                  <div className="h-8 w-28 bg-slate-300/50 rounded animate-pulse"></div>
-                  <div className="h-8 w-20 bg-slate-300/50 rounded animate-pulse"></div>
+              {/* Trust Signals (Fixed & Inside Left Column) */}
+              <div className="mt-16 pt-8 border-t border-slate-200">
+                <p className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-6">
+                  Trusted by Forward-Thinking Institutions
+                </p>
+                
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 lg:gap-12 opacity-60 grayscale transition-all duration-500 hover:grayscale-0 hover:opacity-100 cursor-default">
+                  
+                  {/* Logo 1: UniTech */}
+                  <div className="flex items-center gap-2 group">
+                    <div className="w-8 h-8 bg-slate-800 text-white rounded-lg flex items-center justify-center font-serif font-bold group-hover:bg-primary-600 transition-colors">U</div>
+                    <span className="font-bold text-lg text-slate-700 font-serif">UniTech</span>
+                  </div>
+
+                  {/* Logo 2: City College */}
+                  <div className="flex items-center gap-2">
+                    <Shield size={24} className="text-slate-800 fill-slate-800/20" />
+                    <span className="font-bold text-lg text-slate-700 tracking-tight">City<span className="font-light">College</span></span>
+                  </div>
+
+                  {/* Logo 3: EduGlobal */}
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 border-2 border-slate-800 rounded-full flex items-center justify-center font-bold text-slate-800">E</div>
+                    <span className="font-bold text-lg text-slate-700">EduGlobal</span>
+                  </div>
+                  
+                  {/* Logo 4: NextGen */}
+                  <div className="flex items-center gap-2">
+                    <Zap size={24} className="text-slate-800" fill="currentColor" />
+                    <span className="font-bold text-lg text-slate-700 italic">NextGen</span>
+                  </div>
+
                 </div>
               </div>
-            </div>
+            </div> 
+            {/* ^^^ This closing div was likely missing or misplaced before! ^^^ */}
 
             {/* Right Column: Image/Mockup */}
             <div className="lg:col-span-6 relative lg:h-[600px]">
               <div className="relative w-full h-full">
-                {/* Main Mockup Image (Placeholder) */}
+                {/* Main Mockup Image */}
                 <div className="w-full h-auto rounded-3xl shadow-2xl overflow-hidden border-4 border-white bg-white z-10 relative transform md:rotate-2 lg:absolute lg:top-10 lg:right-0 lg:max-w-xl">
                   <img 
                     src="https://placehold.co/800x600/f1f5f9/cbd5e1?text=AcadNexus+Dashboard+Mockup" 
